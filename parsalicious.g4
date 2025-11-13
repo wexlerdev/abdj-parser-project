@@ -1,3 +1,29 @@
+// It all starts here...
+grammar parsalicious;
+
+// Entry point
+program
+  : statement* EOF
+  ;
+
+statement
+  : simpleStatement NEWLINE*                
+  ;
+
+simpleStatement
+  : assignment                              
+  | compoundAssignment                      
+  | expression                              
+  ;
+
+assignment
+  : VARNAME ASSIGN expression               
+  ;
+
+compoundAssignment
+  : VARNAME (AUG_ADD | AUG_SUB | AUG_MUL | AUG_DIV | AUG_MOD) expression
+  ;
+
 //------------------
 // LEXER RULES
 //------------------
@@ -45,3 +71,4 @@ NEWLINE : ('\r'? '\n')+ ;
 
 // ===== Skipped stuff =====
 WS : [ \t]+ -> skip ;
+
