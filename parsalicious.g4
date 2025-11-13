@@ -24,6 +24,30 @@ compoundAssignment
   : VARNAME (AUG_ADD | AUG_SUB | AUG_MUL | AUG_DIV | AUG_MOD) expression
   ;
 
+// expression
+expression
+  : '(' expression ')'                                   
+  | literal                                              
+  | array                                                
+  | expression op=('*' | '/' | '%') expression           
+  | expression op=('+' | '-') expression                
+  ;
+
+// array!
+array
+  : LBRACKET (expression (COMMA expression)*)? RBRACKET   
+  ;
+
+// literals
+literal
+  : INT
+  | FLOAT
+  | STRING
+  | TRUE
+  | FALSE
+  | VARNAME
+  ;
+
 //------------------
 // LEXER RULES
 //------------------
