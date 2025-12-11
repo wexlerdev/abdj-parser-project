@@ -10,6 +10,7 @@ statement
     : simpleStatement
     | ifStatement
     | whileStatement
+    | forStatement
     ;
 
 simpleStatement
@@ -37,6 +38,10 @@ whileStatement
     : 'while' expression ':' NEWLINE then+
     ;
 
+forStatement
+    : 'for' VARNAME 'in' expression ':' NEWLINE then+
+    ;
+
 
 then
     : indentedStatement+
@@ -50,16 +55,17 @@ indentedStatement
 expression
     : '(' expression ')'
     | literal
-    | array                                    
+    | array                                     
     | '-' expression
     | 'not' expression                        
     | expression op=('*' | '/' | '%') expression  
     | expression op=('+' | '-') expression    
-    | expression op=('<' | '<=' | '>' | '>=') expression
-    | expression op=('==' | '!=') expression    
+    | expression op=('<' | '<=' | '>' | '>=') expression 
+    | expression op=('==' | '!=') expression     
     | expression 'and' expression              
-    | expression 'or' expression            
+    | expression 'or' expression             
     ;
+
 
 // array!
 array
@@ -89,8 +95,8 @@ STRING
   | '\'' ( ~['\\] | '\\' . )* '\''
 ;
 
-// Literals
-FLOAT : [0-9]+ '.' [0-9]+ ;
+// Literals 
+FLOAT : [0-9]+ '.' [0-9]+ ; 
 INT   : [0-9]+;
 
 // ===== Identifiers =====
@@ -124,5 +130,7 @@ TAB : '\t';
 // ===== End-of-line =====
 NEWLINE : ('\r'? '\n')+ ;
 
+
 // Whitespace
 WS : [ ]+ -> skip ;
+
