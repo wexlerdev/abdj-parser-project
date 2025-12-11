@@ -53,7 +53,8 @@ indentedStatement
     ;
 
 expression
-    : '(' expression ')'
+    : functionCall
+    |'(' expression ')'
     | literal
     | array                                     
     | '-' expression
@@ -64,6 +65,11 @@ expression
     | expression op=('==' | '!=') expression     
     | expression 'and' expression              
     | expression 'or' expression             
+    ;
+
+// function call 
+functionCall
+    : VARNAME '(' (expression (',' expression)*)? ')'
     ;
 
 // array!
@@ -141,3 +147,4 @@ NEWLINE : ('\r'? '\n')+ ;
 
 // Whitespace
 WS : [ ]+ -> skip ;
+
