@@ -30,18 +30,28 @@ ifStatement
       ('elif' expression ':' NEWLINE then)*
       ('else' ':' NEWLINE then)?
     ;
-// add then statment here
 
+then
+    : indentedStatement+
+    ;
 
-// expression
-// we need to add more for boolean
+indentedStatement
+    : TAB statement
+    ;
+
 expression
-  : '(' expression ')'                                   
-  | literal                                              
-  | array                                                
-  | expression op=('*' | '/' | '%') expression           
-  | expression op=('+' | '-') expression                
-  ;
+    : '(' expression ')'
+    | literal
+    | array                                     
+    | '-' expression
+    | 'not' expression                        
+    | expression op=('*' | '/' | '%') expression  
+    | expression op=('+' | '-') expression    
+    | expression op=('<' | '<=' | '>' | '>=') expression 
+    | expression op=('==' | '!=') expression     
+    | expression 'and' expression              
+    | expression 'or' expression             
+    ;
 
 // array!
 array
@@ -71,7 +81,7 @@ STRING
   | '\'' ( ~['\\] | '\\' . )*  '\''
   ;
 
-// Literals (Matches parsalicious style [cite: 46])
+// Literals
 FLOAT : [0-9]+ '.' [0-9]+ ;
 INT   : [0-9]+;
 
@@ -101,8 +111,11 @@ LBRACKET : '[' ;
 RBRACKET : ']' ;
 COMMA    : ',' ;
 
+TAB : '\t';
+
 // ===== End-of-line =====
 NEWLINE : ('\r'? '\n')+ ;
 
 // ===== Skipped stuff =====
 WS : [ \t]+ -> skip ;
+
