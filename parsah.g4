@@ -66,7 +66,6 @@ expression
     | expression 'or' expression             
     ;
 
-
 // array!
 array
     : LBRACKET (expression (COMMA expression)*)? RBRACKET
@@ -88,6 +87,15 @@ literal
 // ===== Keywords / Bools (place BEFORE identifiers so they win) =====
 TRUE  : 'True';
 FALSE : 'False';
+
+// ===== Comments =====
+BLOCK_COMMENT
+    : '\'\'\'' ( . | '\r' | '\n' )*? '\'\'\'' NEWLINE* -> skip
+    ;
+
+COMMENT
+    : '#' ~[\r\n]* NEWLINE* -> skip
+    ;
 
 // ===== Literals =====
 STRING
@@ -133,4 +141,3 @@ NEWLINE : ('\r'? '\n')+ ;
 
 // Whitespace
 WS : [ ]+ -> skip ;
-
