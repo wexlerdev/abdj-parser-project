@@ -9,6 +9,7 @@ program
 statement
     : simpleStatement
     | ifStatement
+    | whileStatement
     ;
 
 simpleStatement
@@ -26,31 +27,38 @@ compoundAssignment
 
 // if statements
 ifStatement
-    : 'if' expression ':' NEWLINE then
-      ('elif' expression ':' NEWLINE then)*
-      ('else' ':' NEWLINE then)?
+    : TAB* 'if' expression ':' NEWLINE then+
+      TAB* ('elif' expression ':' NEWLINE then)*
+      TAB* ('else' ':' NEWLINE then)?
     ;
+
+
+whileStatement
+    : 'while' expression ':' NEWLINE then+
+    ;
+
 
 then
     : indentedStatement+
     ;
 
+
 indentedStatement
-    : TAB statement
+    : TAB+ statement
     ;
 
 expression
     : '(' expression ')'
     | literal
-    | array                                     
+    | array                                    
     | '-' expression
     | 'not' expression                        
     | expression op=('*' | '/' | '%') expression  
     | expression op=('+' | '-') expression    
-    | expression op=('<' | '<=' | '>' | '>=') expression 
-    | expression op=('==' | '!=') expression     
+    | expression op=('<' | '<=' | '>' | '>=') expression
+    | expression op=('==' | '!=') expression    
     | expression 'and' expression              
-    | expression 'or' expression             
+    | expression 'or' expression            
     ;
 
 // array!
@@ -77,9 +85,9 @@ FALSE : 'False';
 
 // ===== Literals =====
 STRING
-  : '"'  ( ~["\\] | '\\' . )*  '"'
-  | '\'' ( ~['\\] | '\\' . )*  '\''
-  ;
+  : '"'  ( ~["\\] | '\\' . )* '"'
+  | '\'' ( ~['\\] | '\\' . )* '\''
+;
 
 // Literals
 FLOAT : [0-9]+ '.' [0-9]+ ;
@@ -116,6 +124,5 @@ TAB : '\t';
 // ===== End-of-line =====
 NEWLINE : ('\r'? '\n')+ ;
 
-// ===== Skipped stuff =====
-WS : [ \t]+ -> skip ;
-
+// Whitespace
+WS : [ ]+ -> skip ;
